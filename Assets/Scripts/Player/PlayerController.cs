@@ -8,8 +8,13 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Player Movement")]
     public float moveSpeed = 5f;
+    public float moveSpeedMultiplier = 2;
+    public float accelerationTime = 5f;
+    public float cooldownTime = 5f;
     public float jumpForce = 5f;
     private Vector2 curMovementInput;
+    private float lastAccelerationTime;
+    private bool isAccelerating;
 
     public LayerMask groundLayerMask;
 
@@ -18,11 +23,12 @@ public class PlayerController : MonoBehaviour
     public float maxXLook;
     public float minXLook;
     private float camCurXRot;
-    public float lookSensitivity = 1f;
+    [Range(0, 1)] public float lookSensitivity = 1f;
     private Vector2 mouseDelta;
 
     public bool canLook = true;
     public Action inventory;
+    public Action setting;
 
     private Rigidbody _rigidbody;
 
@@ -50,7 +56,19 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         Vector3 dir = transform.forward * curMovementInput.y + transform.right * curMovementInput.x;
-        dir *= moveSpeed;
+        if (isAccelerating)
+        {
+            if (Time.time - lastAccelerationTime > accelerationTime)
+            {
+                isAccelerating = false;
+            }
+
+            dir *= moveSpeed * moveSpeedMultiplier;
+        }
+        else
+        {
+            dir *= moveSpeed;
+        }
         dir.y = _rigidbody.velocity.y;
 
         _rigidbody.velocity = dir;
@@ -120,10 +138,38 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void OnEscape(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            ToggleSetting();
+        }
+    }
+
+    public void ToggleSetting()
+    {
+        setting?.Invoke();
+        ToggleCursor();
+    }
+
     private void ToggleCursor()
     {
         bool toggle = Cursor.lockState == CursorLockMode.Locked;
         Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
         canLook = !toggle;
+    }
+
+    public void OnAcceleration(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            isAccelerating = true;
+            lastAccelerationTime = Time.time;
+        }
+    }
+
+    public void SetLookSensitivity(float value)
+    {
+        lookSensitivity = value;
     }
 }
