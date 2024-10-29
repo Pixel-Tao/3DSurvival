@@ -205,6 +205,12 @@ public class UIInventory : MonoBehaviour
                     case ConsumableType.Hunger:
                         condition.Eat(selectedItem.consumables[i].value);
                         break;
+                    case ConsumableType.Mana:
+                        condition.ManaRegen(selectedItem.consumables[i].value);
+                        break;
+                    case ConsumableType.Stamina:
+                        condition.StaminaRegen(selectedItem.consumables[i].value);
+                        break;
                 }
             }
             RemoveSelectedItem();

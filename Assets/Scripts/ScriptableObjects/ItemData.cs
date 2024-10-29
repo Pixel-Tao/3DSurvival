@@ -15,6 +15,7 @@ public enum ConsumableType
     Health,
     Hunger,
     Stamina,
+    Mana
 }
 
 [Serializable]

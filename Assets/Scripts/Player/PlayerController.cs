@@ -10,10 +10,11 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 5f;
     public float moveSpeedMultiplier = 2;
     public float accelerationTime = 5f;
-    public float cooldownTime = 5f;
+    public float accelCooldownTime = 5f;
     public float jumpForce = 5f;
+    public int accelerationManaCost = 10;
     private Vector2 curMovementInput;
-    private float lastAccelerationTime;
+    private float lastAccelerationTime = float.MinValue;
     private bool isAccelerating;
 
     public LayerMask groundLayerMask;
@@ -31,12 +32,14 @@ public class PlayerController : MonoBehaviour
     public Action setting;
 
     private Rigidbody _rigidbody;
+    private PlayerCondition condition;
 
     // Start is called before the first frame update
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         _rigidbody = GetComponent<Rigidbody>();
+        condition = GetComponent<PlayerCondition>();
     }
 
     // Update is called once per frame
@@ -163,8 +166,11 @@ public class PlayerController : MonoBehaviour
     {
         if (context.phase == InputActionPhase.Started)
         {
-            isAccelerating = true;
-            lastAccelerationTime = Time.time;
+            if (Time.time - lastAccelerationTime >= accelCooldownTime && condition.UseMana(accelerationManaCost))
+            {
+                isAccelerating = true;
+                lastAccelerationTime = Time.time;
+            }
         }
     }
 
