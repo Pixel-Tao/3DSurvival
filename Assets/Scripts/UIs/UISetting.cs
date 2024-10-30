@@ -1,11 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 using UnityEngine.UI;
 
-public class UISetting : MonoBehaviour
+public class UISetting : UIBase
 {
     public GameObject settingWindow;
     public Slider lookSensitivity;
@@ -16,25 +12,6 @@ public class UISetting : MonoBehaviour
     {
         lookSensitivity.value = CharacterManager.Instance.Player.controller.lookSensitivity;
         controller = CharacterManager.Instance.Player.controller;
-        controller.setting += Toggle;
-        settingWindow.SetActive(false);
-    }
-
-    public void Toggle()
-    {
-        if (IsOpen())
-        {
-            settingWindow.SetActive(false);
-        }
-        else
-        {
-            settingWindow.SetActive(true);
-        }
-    }
-
-    public bool IsOpen()
-    {
-        return settingWindow.activeInHierarchy;
     }
 
     public void OnLookSensitivityChanged(float value)
@@ -49,6 +26,7 @@ public class UISetting : MonoBehaviour
 
     public void OnCloseClick()
     {
-        controller.ToggleSetting();
+        UIManager.Instance.Close<UISetting>();
+        UIManager.Instance.LockCursor(false);
     }
 }

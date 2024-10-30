@@ -1,11 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 
-public class UIInventory : MonoBehaviour
+public class UIInventory : UIBase
 {
     public ItemSlot[] slots;
     public GameObject inventoryWindow;
@@ -38,10 +34,8 @@ public class UIInventory : MonoBehaviour
         controller = CharacterManager.Instance.Player.controller;
         condition = CharacterManager.Instance.Player.condition;
         dropPosition = CharacterManager.Instance.Player.dropPosition;
-        controller.inventory += Toggle;
         CharacterManager.Instance.Player.addItem += AddItem;
 
-        inventoryWindow.SetActive(false);
         slots = new ItemSlot[slotPanel.childCount];
 
         for (int i = 0; i < slots.Length; i++)
@@ -49,6 +43,7 @@ public class UIInventory : MonoBehaviour
             slots[i] = slotPanel.GetChild(i).GetComponent<ItemSlot>();
             slots[i].index = i;
             slots[i].inventory = this;
+            slots[i].Clear();
         }
 
         ClearSelectedItemWindow();
@@ -71,23 +66,6 @@ public class UIInventory : MonoBehaviour
         equipButton.SetActive(false);
         unequipButton.SetActive(false);
         dropButton.SetActive(false);
-    }
-
-    public void Toggle()
-    {
-        if (IsOpen())
-        {
-            inventoryWindow.SetActive(false);
-        }
-        else
-        {
-            inventoryWindow.SetActive(true);
-        }
-    }
-
-    public bool IsOpen()
-    {
-        return inventoryWindow.activeInHierarchy;
     }
 
     private void AddItem()

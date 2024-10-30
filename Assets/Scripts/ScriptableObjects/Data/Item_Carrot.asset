@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 577083488a428f149b40ebd6a2ceb39a, type: 3}
   m_Name: Item_Carrot
   m_EditorClassIdentifier: 
+  id: 103
   displayName: "\uB2F9\uADFC"
   description: "\uCCB4\uB825\uACFC \uBC30\uACE0\uD514\uC744 \uD68C\uBCF5\uD568."
   type: 1

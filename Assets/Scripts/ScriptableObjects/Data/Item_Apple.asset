@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 577083488a428f149b40ebd6a2ceb39a, type: 3}
   m_Name: Item_Apple
   m_EditorClassIdentifier: 
+  id: 101
   displayName: "\uC0AC\uACFC"
   description: "\uC0DD\uBA85\uB825\uACFC \uB9C8\uB098\uB97C \uD68C\uBCF5 \uC2DC\uCF1C\uC90D\uB2C8\uB2E4."
   type: 1

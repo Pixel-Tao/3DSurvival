@@ -27,10 +27,6 @@ public class PlayerController : MonoBehaviour
     [Range(0, 1)] public float lookSensitivity = 1f;
     private Vector2 mouseDelta;
 
-    public bool canLook = true;
-    public Action inventory;
-    public Action setting;
-
     private Rigidbody _rigidbody;
     private PlayerCondition condition;
 
@@ -50,7 +46,7 @@ public class PlayerController : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (canLook)
+        if (UIManager.Instance.CanLook)
         {
             CameraLook();
         }
@@ -136,8 +132,7 @@ public class PlayerController : MonoBehaviour
     {
         if (context.phase == InputActionPhase.Started)
         {
-            inventory?.Invoke();
-            ToggleCursor();
+            UIManager.Instance.Toggle<UIInventory>(true);
         }
     }
 
@@ -145,23 +140,9 @@ public class PlayerController : MonoBehaviour
     {
         if (context.phase == InputActionPhase.Started)
         {
-            ToggleSetting();
+            UIManager.Instance.Toggle<UISetting>(true);
         }
     }
-
-    public void ToggleSetting()
-    {
-        setting?.Invoke();
-        ToggleCursor();
-    }
-
-    private void ToggleCursor()
-    {
-        bool toggle = Cursor.lockState == CursorLockMode.Locked;
-        Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
-        canLook = !toggle;
-    }
-
     public void OnAcceleration(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Started)

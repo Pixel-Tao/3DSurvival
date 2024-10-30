@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -6,6 +7,9 @@ using UnityEngine.InputSystem;
 
 public class Interaction : MonoBehaviour
 {
+    public event Action<string> SetPromptTextEvent;
+    public event Action<bool> ActivePromptEvent;
+
     public float checkRate = 0.05f;
     private float lastCheckTime;
     public float maxCheckDistance = 2f;
@@ -14,18 +18,11 @@ public class Interaction : MonoBehaviour
     public GameObject curInteractGameObject;
     private IInteractable curInteractable;
 
-    public TextMeshProUGUI promptText;
     private Camera camera;
 
     private void Awake()
     {
         camera = Camera.main;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
     }
 
     // Update is called once per frame
@@ -56,15 +53,14 @@ public class Interaction : MonoBehaviour
         {
             curInteractGameObject = null;
             curInteractable = null;
-            promptText.gameObject.SetActive(false);
+            ActivePromptEvent?.Invoke(false);
         }
-
     }
 
     private void SetPromptText()
     {
-        promptText.gameObject.SetActive(true);
-        promptText.text = curInteractable.GetInteractPrompt();
+        ActivePromptEvent?.Invoke(true);
+        SetPromptTextEvent?.Invoke(curInteractable.GetInteractPrompt());
     }
 
     public void OnInteractInput(InputAction.CallbackContext context)
@@ -74,7 +70,7 @@ public class Interaction : MonoBehaviour
             curInteractable.OnInteract();
             curInteractGameObject = null;
             curInteractable = null;
-            promptText.gameObject.SetActive(false);
+            ActivePromptEvent?.Invoke(false);
         }
     }
 }

@@ -134,8 +134,6 @@ public class NPC : MonoBehaviour, IDamageable
         }
         while (Vector3.Distance(transform.position, hit.position) < detectDistance);
 
-
-
         return hit.position;
     }
 

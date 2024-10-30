@@ -28,6 +28,8 @@ public class ItemDataConsumable
 [CreateAssetMenu(fileName = "Item", menuName = "Item/New Item")]
 public class ItemData : ScriptableObject
 {
+    public int id;
+
     [Header("Info")]
     public string displayName;
     public string description;
