@@ -13,13 +13,15 @@ public class UIManager : ManagerSingleton<UIManager>
     private T Generate<T>() where T : UIBase
     {
         GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>($"Assets/Prefabs/UI/{typeof(T).Name}.prefab");
-        GameObject go = Instantiate(prefab, transform);
+        GameObject go = Instantiate(prefab);
         go.name = typeof(T).Name;
         UIBase uiBase = go.GetComponent<UIBase>();
         uiDict.Add(go.name, uiBase);
 
         return uiBase as T;
     }
+
+    // UIBaseType == T == Clase Name
 
     public T Open<T>() where T : UIBase
     {

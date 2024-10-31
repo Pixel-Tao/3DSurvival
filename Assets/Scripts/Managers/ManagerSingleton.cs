@@ -21,7 +21,7 @@ public class ManagerSingleton<T> : MonoBehaviour where T : MonoBehaviour
             _instance = FindObjectOfType<T>();
             if (_instance == null)
             {
-                _instance = new GameObject(nameof(T)).AddComponent<T>();
+                _instance = new GameObject(typeof(T).Name).AddComponent<T>();
             }
         }
     }
